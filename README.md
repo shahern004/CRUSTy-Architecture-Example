@@ -1,6 +1,6 @@
 # CRUSTy Architecture Setup Procedure
 
-## Requirements for MY_RUST_LIB Integration
+## Requirements for CRUSTy Integration
 
 1. **Install Rust and Cargo**  
    Download from https://www.rust-lang.org/tools/install
