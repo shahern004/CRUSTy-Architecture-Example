@@ -1,0 +1,11 @@
+[package]
+name = "crustyArchitectureExample"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "crustyArchitectureExample"
+crate-type = ["staticlib", "cdylib"]
+
+[build-dependencies]
+cbindgen = "0.28.0"

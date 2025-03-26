@@ -1,0 +1,6 @@
+language = "C++"
+namespace = "crustyArchitecture"
+include_guard = "crustyArchitectureExampleHPP"
+
+[export]
+prefix = "crusty_"
