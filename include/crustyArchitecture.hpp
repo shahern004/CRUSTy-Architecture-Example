@@ -1,5 +1,5 @@
-#ifndef crustyArchitecture.HPP
-#define crustyArchitecture.HPP
+#ifndef CRUSTY_ARCHITECTURE_HPP
+#define CRUSTY_ARCHITECTURE_HPP
 
 #include <cstdarg>
 #include <cstdint>
@@ -11,4 +11,4 @@ namespace crustyArchitecture {
 
 }  // namespace crustyArchitecture
 
-#endif  // crustyArchitecture.HPP
+#endif  // CRUSTY_ARCHITECTURE_HPP

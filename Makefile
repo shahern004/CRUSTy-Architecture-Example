@@ -1,21 +1,25 @@
 CXX = x86_64-w64-mingw32-g++
-CXXFLAGS = -Wall -std=c++17 -IC:\Users\Owner\CRUSTy-Architecture-Example\include
+CXXFLAGS = -Wall -std=c++17 -I./include
 LDFLAGS = -static
-PROJECT_DIR = C:\Users\Owner\CRUSTy-Architecture-Example
 
-all: $(PROJECT_DIR)/main_rust.exe $(PROJECT_DIR)/main_cpp.exe
+all: prep main_rust.exe main_cpp.exe
 
-$(PROJECT_DIR)/main_rust.exe: $(PROJECT_DIR)/main_rust.cpp
+# Build Rust library first
+prep:
+	@echo "Building Rust library..."
+	cargo build --release
+
+main_rust.exe: main_rust.cpp
 	@echo "Building main_rust.exe..."
-	$(CXX) $(CXXFLAGS) -o $@ $^ -L$(PROJECT_DIR)/target/release -lcrustyArchitecture $(LDFLAGS) || exit 1
+	$(CXX) $(CXXFLAGS) -o $@ $< -L./target/release -lcrustyArchitecture $(LDFLAGS)
 
-$(PROJECT_DIR)/main_cpp.exe: $(PROJECT_DIR)/main_cpp.cpp $(PROJECT_DIR)/fifo_cpp.cpp
-	@echo "Building main_cpp.exe..."
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) || exit 1
+main_cpp.exe: main_cpp.cpp fifo_cpp.cpp
+	@echo "Building main-cpp.exe..."
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
 	@echo "Cleaning..."
 	cargo clean
-	rm -f $(PROJECT_DIR)/main_rust.exe $(PROJECT_DIR)/main_cpp.exe
+	rm -f main_rust.exe main_cpp.exe
 
-.PHONY: all clean
+.PHONY: all prep clean
