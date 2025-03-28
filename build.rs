@@ -7,7 +7,7 @@ fn main() {
     
     let output_file = PathBuf::from(crate_dir.clone())
         .join("include")
-        .join("crustyArchitectureExample.hpp");
+        .join("crustyArchitecture.hpp");
         
     cbindgen::Builder::new()
         .with_crate(crate_dir)
