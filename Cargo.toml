@@ -1,10 +1,10 @@
 [package]
-name = "crustyArchitectureExample"
+name = "crustyArchitecture"
 version = "0.1.0"
 edition = "2024"
 
 [lib]
-name = "crustyArchitectureExample"
+name = "crustyArchitecture"
 crate-type = ["staticlib", "cdylib"]
 
 [build-dependencies]
