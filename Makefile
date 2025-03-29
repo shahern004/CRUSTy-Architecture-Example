@@ -1,21 +1,26 @@
 CXX = x86_64-w64-mingw32-g++
-CXXFLAGS = -Wall -std=c++17 -IC:\Users\Owner\CRUSTy-Architecture-Example\include
-LDFLAGS = -static
-PROJECT_DIR = C:\Users\Owner\CRUSTy-Architecture-Example
+CXXFLAGS = -Wall -std=c++17 -I./include -Os # Optimize for size
+LDFLAGS = -s # Strip symbols from final executable
 
-all: $(PROJECT_DIR)/main_rust.exe $(PROJECT_DIR)/main_cpp.exe
+all: prep main_rust.exe main_cpp.exe
 
-$(PROJECT_DIR)/main_rust.exe: $(PROJECT_DIR)/main_rust.cpp
+# Build Rust library first
+prep:
+	@echo "Building Rust library for GNU target..."
+	cargo build --release --target x86_64-pc-windows-gnu
+
+main_rust.exe: main_rust.cpp
 	@echo "Building main_rust.exe..."
-	$(CXX) $(CXXFLAGS) -o $@ $^ -L$(PROJECT_DIR)/target/release -lcrustyArchitecture $(LDFLAGS) || exit 1
+	$(CXX) $(CXXFLAGS) -o $@ $< -L./target/x86_64-pc-windows-gnu/release $(LDFLAGS) -lcrustyArchitecture -lws2_32 -luserenv -lntdll -lstdc++ -lgcc_s -lgcc -ladvapi32 -lkernel32 -lmingwex -lmsvcrt
 
-$(PROJECT_DIR)/main_cpp.exe: $(PROJECT_DIR)/main_cpp.cpp $(PROJECT_DIR)/fifo_cpp.cpp
-	@echo "Building main_cpp.exe..."
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) || exit 1
+# Build main_cpp.exe using only main_cpp.cpp (now uses std::queue)
+main_cpp.exe: main_cpp.cpp
+	@echo "Building main_cpp.exe (using std::queue)..."
+	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
 	@echo "Cleaning..."
 	cargo clean
-	rm -f $(PROJECT_DIR)/main_rust.exe $(PROJECT_DIR)/main_cpp.exe
+	del /f /q main_rust.exe main_cpp.exe 2>nul || (exit 0)
 
-.PHONY: all clean
+.PHONY: all prep clean
