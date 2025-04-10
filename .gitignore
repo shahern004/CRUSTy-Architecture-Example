@@ -1,5 +1,7 @@
 /target
 memory-bank/
-.rooignore
 .roomodes
-/.roo
+
+# Ignore Roo files/folders
+.roo/
+.rooignore
