@@ -91,3 +91,29 @@ This log documents significant changes and troubleshooting steps taken from the 
     - `main_cpp.exe`: **19,456 bytes**
     - `main_rust.exe`: **19,968 bytes**
 - **Impact:** The `no_std` transition combined with build optimizations dramatically reduced the `main_rust.exe` size, making it comparable to (and only ~500 bytes larger than) the optimized C++ baseline. This demonstrates the viability of the CRUSTy approach for size-constrained embedded environments by eliminating the Rust standard library overhead. The FFI interface remains the same from the C++ perspective.
+
+## 7. Embedded Cross-Compilation Setup (thumbv7em-none-eabi)
+
+- **Goal:** Migrate the build process from Windows/MinGW to the target embedded platform (`thumbv7em-none-eabi` using `arm-none-eabi-gcc`).
+- **Initial Setup:**
+  - Installed the Rust target: `rustup target add thumbv7em-none-eabi`.
+  - Created/configured `.cargo/config.toml` for the target, specifying `linker = "arm-none-eabi-gcc"` and initial `rustflags` including a placeholder linker script (`-C link-arg=-Tlink.x`).
+- **Toolchain Exploration (IAR Detour):**
+  - Briefly attempted configuration using the IAR toolchain (`ilinkarm.exe`, `.icf` script). This failed due to the linker not being in the PATH and was abandoned in favor of the GNU toolchain.
+  - IAR-related files were archived in `docs/IAR Reference/`.
+- **GNU Toolchain Configuration:**
+  - Reverted `.cargo/config.toml` to use `arm-none-eabi-gcc`.
+  - Created a placeholder GNU linker script `k65_linker_gnu_placeholder.ld`.
+  - Updated `rustflags` to point to this script: `rustflags = ["-C", "link-arg=-Tk65_linker_gnu_placeholder.ld"]`.
+- **C++ Cross-Compilation (`build.rs`):**
+  - Added `cc` crate as a build dependency.
+  - Modified `build.rs` to detect the `thumbv7em-none-eabi` target and use `arm-none-eabi-g++` via the `cc` crate to compile C++ sources (`src/fifo_cpp.cpp`) into `libfifo_cpp.a`.
+- **Rust Binary & Linking:**
+  - Ensured `cortex-m-rt` dependency and `#[entry]` point were present.
+  - Switched Rust crate type from `staticlib` to `bin` (using `src/main.rs`) to force linker invocation during `cargo build`.
+- **Linker Issues & Resolution:**
+  - Corrected syntax errors in the placeholder `k65_linker_gnu_placeholder.ld`.
+  - Encountered linker errors for `__libc_init_array` and `exit`, indicating unwanted linking of standard C startup files.
+  - Resolved by adding `-C link-arg=-nostartfiles` to `rustflags` in `.cargo/config.toml`.
+- **Result:** The project now successfully cross-compiles both Rust and C++ code for the `thumbv7em-none-eabi` target using the GNU toolchain and links them into a binary without standard startup files. Build completes without errors.
+- **Current Challenge:** Obtaining detailed linker command/output during the build process remains difficult, even with verbose flags.

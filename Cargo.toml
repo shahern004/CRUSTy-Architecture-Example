@@ -5,15 +5,20 @@ edition = "2024"
 
 [lib]
 name = "crustyArchitecture"
-crate-type = ["staticlib"] # Build only the static library
+# crate-type = ["staticlib"] # Build only the static library
 
 [build-dependencies]
 cbindgen = "0.28.0"
+cc = "1.0"
+
 
 [dependencies]
 heapless = "0.7" # For no_std collections
 panic-halt = "0.2.0" # Panic handler
 spin = "0.9" # For basic no_std locking
+
+cortex-m = "0.7"
+cortex-m-rt = { version = "0.7", features = ["device"] }
 
 # Removed dependencies section as once_cell is no longer needed
 

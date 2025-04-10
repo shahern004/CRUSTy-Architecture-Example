@@ -27,6 +27,8 @@ int32_t simulate_interrupt(void *fifo_handle,
 
 void destroy_fifo(void *fifo_handle);
 
+uint32_t rust_function_blank();
+
 }  // extern "C"
 
 }  // namespace crustyArchitecture

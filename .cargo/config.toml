@@ -1,0 +1,7 @@
+[build]
+target = "thumbv7em-none-eabi"
+
+[target.thumbv7em-none-eabi]
+linker = "arm-none-eabi-gcc"
+# Use the GNU linker script
+rustflags = ["-C", "link-arg=-Tk65_linker_gnu_placeholder.ld", "-C", "link-arg=-nostartfiles"]
