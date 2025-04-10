@@ -1,2 +1,5 @@
 /target
 memory-bank/
+.rooignore
+.roomodes
+/.roo

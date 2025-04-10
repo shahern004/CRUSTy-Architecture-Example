@@ -1,3 +1,0 @@
-language = "C"
-namespace = "crusty"
-include_guard = "CRUSTY_ARCHITECTURE_EXAMPLE_H"

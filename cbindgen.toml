@@ -1,3 +1,3 @@
-language = "C++"
-namespace = "crustyArchitecture"
-include_guard = "CRUSTY_ARCHITECTURE_HPP"
+language = "C"
+namespace = "crusty"
+include_guard = "CRUSTY_ARCHITECTURE_EXAMPLE_H"
