@@ -3,7 +3,7 @@ CC_IAR = iccarm
 LD_IAR = ilinkarm
 
 # Target CPU Core (Adjust if necessary)
-CPU_CORE = Cortex-M7
+CPU_CORE = Cortex-M4F
 
 # Compiler Flags
 CFLAGS_IAR = --cpu $(CPU_CORE) -Iinclude -Oh --debug --diag_suppress Pa050
